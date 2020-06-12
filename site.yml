@@ -1,0 +1,23 @@
+---
+# This playbook handles creating an ec2, provisioning it and then creating an ami from it
+
+#
+- hosts: localhost
+  connection: localhost
+  gather_facts: False
+
+  roles:
+  - ec2
+
+- hosts: ec2hosts
+  remote_user: ubuntu
+  gather_facts: false
+  become: yes
+
+  roles:
+  - provision
+
+- hosts: localhost
+
+  roles:
+  - ami
