@@ -1,0 +1,10 @@
+- hosts: ec2hosts
+  remote_user: ubuntu
+  gather_facts: false
+  become: yes
+
+  tasks:
+    - name: update sources and install docker
+      apt:
+        name: docker
+        update_cache: yes

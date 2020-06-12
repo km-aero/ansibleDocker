@@ -1,0 +1,7 @@
+- hosts: ec2hosts
+  ec2_ami:
+    instance_id: "{{ ec2.instance_id }}"
+    wait: yes
+    name: docker
+    tags:
+      Name: docker
