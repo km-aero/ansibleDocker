@@ -1,23 +1,24 @@
-- name: check ec2 is running
-  local_action:
-    module: ec2
-    instance_tags:
-      Name: dockerami
-    state: running
+- name: get ec2 instance id
+  ec2_instance_info:
+    region: eu-west-2
+    filters:
+      "tag:Name": dockerami
+      instance-state-name: running
   register: ec2
 
 - name: create ami
   ec2_ami:
-    instance_id: "{{ item.instance_id }}"
+    instance_id: "{{ ec2.instances[0].instance_id }}"
+    region: eu-west-2
     wait: yes
     name: docker
     tags:
       Name: docker
-  loop: "{{ ec2.instances }}"
 
 - name: terminate ec2
   local_action:
     module: ec2
+    region: eu-west-2
     state: absent
-    instance_ids: "{{ hostvars[groups['ec2hosts'][0]]['instance_id'] }}"
+    instance_ids: "{{ ec2.instances[0].instance_id }}"
     wait: True
