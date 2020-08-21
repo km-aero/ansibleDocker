@@ -15,7 +15,7 @@
     groups: ec2hosts
   loop: "{{ ec2.instances }}"
 
-- name: Wait for SSH to come up
+- name: Wait for SSH to be available
   wait_for:
     host: "{{ item.public_ip }}"
     port: 22
